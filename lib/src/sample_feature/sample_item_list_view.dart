@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 import '../settings/settings_view.dart';
 import 'sample_item.dart';
-import 'sample_item_details_view.dart';
+import 'chat_view.dart';
 
 /// Displays a list of SampleItems.
 class SampleItemListView extends StatelessWidget {
   const SampleItemListView({
     Key? key,
-    this.items = const [SampleItem(1), SampleItem(2), SampleItem(3)],
+    this.items = const [SampleItem(1)],
   }) : super(key: key);
 
   static const routeName = '/';
@@ -43,13 +43,13 @@ class SampleItemListView extends StatelessWidget {
         // Providing a restorationId allows the ListView to restore the
         // scroll position when a user leaves and returns to the app after it
         // has been killed while running in the background.
-        restorationId: 'sampleItemListView',
+        restorationId: 'homeworkListView',
         itemCount: items.length,
         itemBuilder: (BuildContext context, int index) {
           final item = items[index];
 
           return ListTile(
-            title: Text('SampleItem ${item.id}'),
+            title: Text('Homework ${item.id}'),
             leading: const CircleAvatar(
               // Display the Flutter Logo image asset.
               foregroundImage: AssetImage('assets/images/flutter_logo.png'),
@@ -60,7 +60,7 @@ class SampleItemListView extends StatelessWidget {
               // background, the navigation stack is restored.
               Navigator.restorablePushNamed(
                 context,
-                SampleItemDetailsView.routeName,
+                ChatView.routeName,
               );
             }
           );
