@@ -1,9 +1,10 @@
+import 'package:easyflutter/src/screens/first_chat_view.dart';
+import 'package:easyflutter/src/screens/second_api_chat_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-import 'sample_feature/chat_view.dart';
-import 'sample_feature/sample_item_list_view.dart';
+import 'list/item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
@@ -71,9 +72,11 @@ class MyApp extends StatelessWidget {
                     return SettingsView(controller: settingsController);
                   case ChatView.routeName:
                     return const ChatView(title: 'Chat');
-                  case SampleItemListView.routeName:
+                  case ApiChatView.routeName:
+                    return const ApiChatView(title: 'API Chat');
+                  case ItemListView.routeName:
                   default:
-                    return const SampleItemListView();
+                    return const ItemListView();
                 }
               },
             );

@@ -1,19 +1,20 @@
+import 'package:easyflutter/src/screens/first_chat_view.dart';
+import 'package:easyflutter/src/screens/second_api_chat_view.dart';
 import 'package:flutter/material.dart';
 
 import '../settings/settings_view.dart';
-import 'sample_item.dart';
-import 'chat_view.dart';
+import 'list_item.dart';
 
-/// Displays a list of SampleItems.
-class SampleItemListView extends StatelessWidget {
-  const SampleItemListView({
+/// Displays a list of ListItems.
+class ItemListView extends StatelessWidget {
+  const ItemListView({
     Key? key,
-    this.items = const [SampleItem(1)],
+    this.items = const [ListItem(1, ChatView.routeName), ListItem(2, ApiChatView.routeName)],
   }) : super(key: key);
 
   static const routeName = '/';
 
-  final List<SampleItem> items;
+  final List<ListItem> items;
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,7 @@ class SampleItemListView extends StatelessWidget {
               // background, the navigation stack is restored.
               Navigator.restorablePushNamed(
                 context,
-                ChatView.routeName,
+                item.url,
               );
             }
           );

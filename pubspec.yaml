@@ -1,5 +1,5 @@
 name: easyflutter
-description: A new Flutter project.
+description: A new Flutter project with homeworks.
 
 # Prevent accidental publishing to pub.dev.
 publish_to: 'none'
@@ -14,12 +14,22 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  retrofit: 2.0.1
+  json_annotation: 4.1.0
+  mobx: ^2.0.0
+  flutter_mobx: ^2.0.2
+  http: 0.13.3
+  dio: ^4.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^1.0.0
+  mobx_codegen: ^2.0.0
+  build_runner: 2.1.2
+  retrofit_generator: 2.0.1+1
+  json_serializable: 5.0.1
 
 flutter:
   uses-material-design: true
