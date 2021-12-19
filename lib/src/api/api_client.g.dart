@@ -7,9 +7,7 @@ part of 'api_client.dart';
 // **************************************************************************
 
 class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://itis-chat-app-ex.herokuapp.com/chat';
-  }
+  _RestClient(this._dio, {this.baseUrl});
 
   final Dio _dio;
 
@@ -47,6 +45,20 @@ class _RestClient implements RestClient {
     var value = _result.data!
         .map((dynamic i) => Message.fromJson(i as Map<String, dynamic>))
         .toList();
+    return value;
+  }
+
+  @override
+  Future<String> getImage() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<String>(_setStreamType<String>(
+        Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+            .compose(_dio.options, '',
+                queryParameters: queryParameters, data: _data)
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = _result.data!;
     return value;
   }
 
