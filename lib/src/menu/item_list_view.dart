@@ -1,19 +1,33 @@
 import 'package:easyflutter/src/chat/first_chat_view.dart';
 import 'package:easyflutter/src/api_chat/second_api_chat_view.dart';
 import 'package:easyflutter/src/gallery/third_gallery_view.dart';
+import 'package:easyflutter/src/instagram/instagram_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 import 'models/list_item.dart';
 
-
 class ItemListView extends StatelessWidget {
   const ItemListView({
     Key? key,
     this.items = const [
-      ListItem(id: 1, url: ChatView.routeName, logoName: '1.png', title: 'Chat'),
-      ListItem(id: 2, url: ApiChatView.routeName, logoName: '2.jpg', title: 'API Chat'),
-      ListItem(id: 3, url: GalleryView.routeName, logoName: '3.jpg', title: 'Gallery')
+      ListItem(
+          id: 1, url: ChatView.routeName, logoName: '1.png', title: 'Chat'),
+      ListItem(
+          id: 2,
+          url: ApiChatView.routeName,
+          logoName: '2.jpg',
+          title: 'API Chat'),
+      ListItem(
+          id: 3,
+          url: GalleryView.routeName,
+          logoName: '3.jpg',
+          title: 'Gallery'),
+      ListItem(
+          id: 3,
+          url: InstagramView.routeName,
+          logoName: '4.png',
+          title: 'Instagram')
     ],
   }) : super(key: key);
 

@@ -13,6 +13,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
           ? null
           : DateTime.parse(json['timestamp'] as String),
       text: json['text'] as String?,
+      isLiked: json['isLiked'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{
       'author': instance.author,
       'timestamp': instance.timestamp?.toIso8601String(),
       'text': instance.text,
+      'isLiked': instance.isLiked,
     };

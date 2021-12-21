@@ -17,18 +17,46 @@ class InstagramView extends StatefulWidget {
 class _InstagramViewState extends State<InstagramView> {
   final ScrollController _scrollController = ScrollController();
 
-
+  int currentPage = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFEEEEEE),
       appBar: AppBar(
-        title: Text(widget.title),
-        leading: Center(
-          child: BackButton(
-            onPressed: () => Modular.to.navigate('/'),
+        backgroundColor: const Color(0xFFEEEEEE),
+        title: Text(
+          widget.title,
+          style: const TextStyle(
+            color: Colors.black,
           ),
         ),
-        actions: [],
+        elevation: 0,
+        centerTitle: true,
+        leading: Center(
+          child:IconButton(
+            onPressed: () => Modular.to.navigate('/'),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+          ),
+        ),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.live_tv,
+              color: Colors.black,
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.send,
+              color: Colors.black,
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder<List<Post>>(
         future: DBProvider.db.getAllPosts(),
@@ -59,13 +87,58 @@ class _InstagramViewState extends State<InstagramView> {
               },
             );
           } else {
-            return Center(child: CircularProgressIndicator());
+            return Center(child: Text('No posts. Create the one.'));
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () async {},
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentPage,
+        onTap: (i){
+          setState(() {
+            currentPage = i;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        selectedItemColor: Colors.black,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(
+                Icons.house,
+                color: Colors.black,
+              ),
+              label: 'Feed',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_box,
+              color: Colors.black,
+            ),
+            label: 'Upload',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.favorite,
+              color: Colors.black,
+            ),
+            label: 'Likes',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.account_circle,
+              color: Colors.black,
+            ),
+            label: 'Account',
+          ),
+        ],
       ),
     );
   }
