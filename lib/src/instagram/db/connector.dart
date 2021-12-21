@@ -8,13 +8,10 @@ class DBProvider {
 
   static final DBProvider db = DBProvider._();
 
-  late Database _database;
+  static Database? _database;
 
   Future<Database> get database async {
-    if (_database != null) return _database;
-    // if _database is null we instantiate it
-    _database = await initDB();
-    return _database;
+    return _database ??= await initDB();
   }
 
   initDB() async {
@@ -23,27 +20,27 @@ class DBProvider {
         onCreate: (Database db, int version) async {
       await db
           .execute("CREATE TABLE post ("
-              "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+              "id INTEGER PRIMARY KEY NOT NULL,"
               "author TEXT,"
               "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,"
               "text TEXT,"
-              "is_liked BOOLEAN,"
+              "is_liked BOOLEAN"
               ")")
           .whenComplete(() => db.execute("CREATE TABLE image_item ("
               "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
-              "post_id INTEGER,"
-              "FOREIGN KEY (post_id) REFERENCES post(id),"
               "url TEXT,"
+              "post_id INTEGER,"
+              "FOREIGN KEY (post_id) REFERENCES post(id)"
               ")"));
     });
   }
 
-  newPost(Post newPost) async {
+  Future<int> newPost(Post newPost) async {
     final db = await database;
     var raw = await db.rawInsert(
-        "INSERT INTO post (author,text,is_liked)"
-        " VALUES (?,?,?)",
-        [newPost.author, newPost.text, newPost.isLiked]);
+        "INSERT INTO post (id, author, text, is_liked)"
+        " VALUES (?, ?, ?, ?)",
+        [newPost.id, newPost.author, newPost.text, newPost.isLiked]);
     return raw;
   }
 
@@ -78,9 +75,18 @@ class DBProvider {
   Future<List<Post>> getAllPosts() async {
     final db = await database;
     var res = await db.query(
-        "SELECT * from post INNER JOIN image_item ON image_item.post_id = post.id");
+        "post");
     List<Post> list =
         res.isNotEmpty ? res.map((c) => Post.fromJson(c)).toList() : [];
+    return list;
+  }
+
+  Future<List<ImageItem>> getAllImages() async {
+    final db = await database;
+    var res = await db.query(
+        "image_item");
+    List<ImageItem> list =
+    res.isNotEmpty ? res.map((c) => ImageItem.fromJson(c)).toList() : [];
     return list;
   }
 

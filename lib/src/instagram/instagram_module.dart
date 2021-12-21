@@ -1,5 +1,5 @@
+import 'screens/post_create.dart';
 import 'instagram_view.dart';
-import 'screens/image_detail.dart';
 import 'stores/image_store.dart';
 import 'stores/gallery_settings_store.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -16,8 +16,6 @@ class InstagramModule extends Module {
         ChildRoute('/',
             child: (context, args) => const InstagramView(title: 'Instagram'),
             transition: TransitionType.fadeIn),
-        ChildRoute('/detail',
-            child: (context, args) => ImageDetailPage(image: args.data),
-            transition: TransitionType.fadeIn),
+        ChildRoute('/create', child: (context, args) => const PostCreate())
       ];
 }

@@ -10,9 +10,9 @@ class ImageItem {
     required this.postId,
   });
 
-  String? id;
+  int? id;
   String url;
-  String postId;
+  int postId;
 
   factory ImageItem.fromJson(Map<String, dynamic> json) =>
       _$ImageItemFromJson(json);

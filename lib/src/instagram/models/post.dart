@@ -5,14 +5,14 @@ part 'post.g.dart';
 @JsonSerializable()
 class Post {
   Post({
-    this.id,
+    this.id = 0,
     required this.author,
     this.timestamp,
     this.text,
     this.isLiked = false,
   });
 
-  String? id;
+  int id;
   String author;
   DateTime? timestamp;
   String? text;

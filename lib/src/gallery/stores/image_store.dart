@@ -1,5 +1,3 @@
-import 'package:dio/dio.dart';
-import 'package:easyflutter/src/api/api_client.dart';
 import 'package:easyflutter/src/gallery/models/image_item.dart';
 import 'package:mobx/mobx.dart';
 import 'package:image_picker/image_picker.dart';
