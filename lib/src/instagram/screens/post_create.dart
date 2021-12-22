@@ -33,7 +33,7 @@ class _PostCreate extends State<PostCreate> {
     List<XFile>? images = await imagePicker.pickMultiImage();
 
     setState(() {
-      images?.forEach((elem) => currentImages.add(elem));
+      images!.forEach((elem) => currentImages.add(elem));
     });
   }
 
@@ -49,7 +49,7 @@ class _PostCreate extends State<PostCreate> {
     DBProvider.db.newPost(
         Post(author: 'easydush', text: descriptionController.text))
         .then((value) => {
-          currentImages?.forEach((image) =>
+          currentImages.forEach((image) =>
           DBProvider.db.newImage(ImageItem(postId: value, url: image.path))
     )
     });

@@ -14,7 +14,7 @@ class InstagramModule extends Module {
   @override
   List<ModularRoute> get routes => [
         ChildRoute('/',
-            child: (context, args) => const InstagramView(title: 'Instagram'),
+            child: (context, args) => const InstagramView(title: 'easygram'),
             transition: TransitionType.fadeIn),
         ChildRoute('/create', child: (context, args) => const PostCreate())
       ];
