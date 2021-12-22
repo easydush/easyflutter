@@ -28,7 +28,7 @@ class _FeedState extends State<Feed> {
   void fetchAll() {
     DBProvider.db
         .getAllPosts()
-        .then((value) => setState(() => posts = value))
+        .then((value) => setState(() => posts = value.reversed.toList()))
         .whenComplete(() => {
               DBProvider.db
                   .getAllImages()
