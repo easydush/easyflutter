@@ -13,7 +13,7 @@ Post _$PostFromJson(Map<String, dynamic> json) => Post(
           ? null
           : DateTime.parse(json['timestamp'] as String),
       text: json['text'] as String?,
-      isLiked: json['isLiked'] as bool? ?? false,
+      isLiked: json['isLiked'] as int? ?? 0,
     );
 
 Map<String, dynamic> _$PostToJson(Post instance) => <String, dynamic>{

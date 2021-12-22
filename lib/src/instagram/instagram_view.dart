@@ -32,7 +32,7 @@ class _InstagramViewState extends State<InstagramView> {
     return Scaffold(
       backgroundColor: const Color(0xFFEEEEEE),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFEEEEEE),
+        backgroundColor: const Color(0xFFFFFFFF),
         title: Text(
           widget.title,
           style: const TextStyle(

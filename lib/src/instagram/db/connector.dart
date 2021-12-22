@@ -24,13 +24,13 @@ class DBProvider {
               "author TEXT,"
               "timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,"
               "text TEXT,"
-              "is_liked BOOLEAN"
+              "isLiked BOOLEAN"
               ")")
           .whenComplete(() => db.execute("CREATE TABLE image_item ("
               "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
               "url TEXT,"
-              "post_id INTEGER,"
-              "FOREIGN KEY (post_id) REFERENCES post(id)"
+              "postId INTEGER,"
+              "FOREIGN KEY (postId) REFERENCES post(id)"
               ")"));
     });
   }
@@ -38,16 +38,16 @@ class DBProvider {
   Future<int> newPost(Post newPost) async {
     final db = await database;
     var raw = await db.rawInsert(
-        "INSERT INTO post (id, author, text, is_liked)"
-        " VALUES (?, ?, ?, ?)",
-        [newPost.id, newPost.author, newPost.text, newPost.isLiked]);
+        "INSERT INTO post (author, text, isLiked)"
+        " VALUES (?, ?, ?)",
+        [newPost.author, newPost.text, newPost.isLiked]);
     return raw;
   }
 
   newImage(ImageItem newPost) async {
     final db = await database;
     var raw = await db.rawInsert(
-        "INSERT INTO image_item (post_id,url)"
+        "INSERT INTO image_item (postId,url)"
         " VALUES (?,?)",
         [newPost.postId, newPost.url]);
     return raw;
@@ -66,7 +66,7 @@ class DBProvider {
         author: post.author,
         text: post.text,
         timestamp: post.timestamp,
-        isLiked: !post.isLiked);
+        isLiked: post.isLiked == 1 ? 0 : 1);
     var res = await db
         .update("post", liked.toJson(), where: "id = ?", whereArgs: [liked.id]);
     return res;

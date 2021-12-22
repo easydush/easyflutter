@@ -20,7 +20,6 @@ class PostCreate extends StatefulWidget {
 
 class _PostCreate extends State<PostCreate> {
   File? file;
-  String id = const Uuid().v1();
   TextEditingController descriptionController = TextEditingController();
   ImagePicker imagePicker = ImagePicker();
   List<XFile> currentImages = [];
@@ -50,7 +49,6 @@ class _PostCreate extends State<PostCreate> {
     DBProvider.db.newPost(
         Post(author: 'easydush', text: descriptionController.text))
         .then((value) => {
-          print(value);
           currentImages?.forEach((image) =>
           DBProvider.db.newImage(ImageItem(postId: value, url: image.path))
     )

@@ -57,65 +57,71 @@ class _ChatViewState extends State<ApiChatView> {
                     interactive: true,
                     thickness: 10,
                     child: Observer(
-                        builder: (context) => ListView.builder(
-                              reverse: true,
-                              controller: _scrollController,
-                              itemCount: _messageStore.fetched.length,
-                              shrinkWrap: true,
-                              padding:
-                                  const EdgeInsets.only(top: 10, bottom: 10),
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  padding: const EdgeInsets.only(
-                                      left: 14, right: 14, top: 10, bottom: 10),
-                                  child: Align(
-                                    alignment:
-                                        (_messageStore.fetched[index].mine ??
-                                                false
-                                            ? Alignment.topRight
-                                            : Alignment.topLeft),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        color: (_messageStore
-                                                    .fetched[index].mine ??
-                                                false
-                                            ? Colors.teal[200]
-                                            : Colors.grey.shade200),
-                                      ),
-                                      padding: EdgeInsets.all(16),
+                        builder: (context) => _messageStore.fetched.isEmpty
+                            ? const Center(child: CircularProgressIndicator())
+                            : ListView.builder(
+                                reverse: true,
+                                controller: _scrollController,
+                                itemCount: _messageStore.fetched.length,
+                                shrinkWrap: true,
+                                padding:
+                                    const EdgeInsets.only(top: 10, bottom: 10),
+                                itemBuilder: (context, index) {
+                                  return Container(
+                                    padding: const EdgeInsets.only(
+                                        left: 14,
+                                        right: 14,
+                                        top: 10,
+                                        bottom: 10),
+                                    child: Align(
+                                      alignment:
+                                          (_messageStore.fetched[index].mine ??
+                                                  false
+                                              ? Alignment.topRight
+                                              : Alignment.topLeft),
                                       child: Container(
-                                        color: Colors.transparent,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Text(
-                                              _messageStore
-                                                  .fetched[index].author,
-                                              style:
-                                                  const TextStyle(fontSize: 16),
-                                            ),
-                                            const SizedBox(
-                                              height: 6,
-                                            ),
-                                            Text(
-                                              _messageStore
-                                                  .fetched[index].message,
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.grey.shade600,
-                                                  fontWeight:
-                                                      FontWeight.normal),
-                                            ),
-                                          ],
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                          color: (_messageStore
+                                                      .fetched[index].mine ??
+                                                  false
+                                              ? Colors.teal[200]
+                                              : Colors.grey.shade200),
+                                        ),
+                                        padding: EdgeInsets.all(16),
+                                        child: Container(
+                                          color: Colors.transparent,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                _messageStore
+                                                    .fetched[index].author,
+                                                style: const TextStyle(
+                                                    fontSize: 16),
+                                              ),
+                                              const SizedBox(
+                                                height: 6,
+                                              ),
+                                              Text(
+                                                _messageStore
+                                                    .fetched[index].message,
+                                                style: TextStyle(
+                                                    fontSize: 13,
+                                                    color: Colors.grey.shade600,
+                                                    fontWeight:
+                                                        FontWeight.normal),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                );
-                              },
-                            )),
+                                  );
+                                },
+                              )),
                   ),
                 ),
                 Container(

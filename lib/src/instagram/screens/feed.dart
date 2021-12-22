@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:intl/intl.dart';
 
 import '../db/connector.dart';
 import '../models/image_item.dart';
@@ -21,6 +22,10 @@ class _FeedState extends State<Feed> {
   @override
   void initState() {
     super.initState();
+    fetchAll();
+  }
+
+  void fetchAll() {
     DBProvider.db
         .getAllPosts()
         .then((value) => setState(() => posts = value))
@@ -29,16 +34,15 @@ class _FeedState extends State<Feed> {
                   .getAllImages()
                   .then((value) => setState(() => images = value))
             });
-    print(posts);
-    print(images);
   }
 
   Widget carousel(List<ImageItem> currentImages) {
     return CarouselSlider(
       options: CarouselOptions(enableInfiniteScroll: false),
       items: currentImages.map((item) {
-        return GestureDetector(
-          child: Hero(tag: item.id.toString(), child: Image.file(File(item.url))),
+        return Padding(
+          padding: EdgeInsets.all(5.0),
+          child: Image.file(File(item.url))
         );
       }).toList(),
     );
@@ -46,145 +50,169 @@ class _FeedState extends State<Feed> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              width: MediaQuery.of(context).size.width,
-              child: ListView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemCount: posts.length,
-                itemBuilder: (ctx, i) {
-                  return Container(
-                    color: Colors.white,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 10,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return posts.isEmpty
+        ? const Center(child: Text('No posts. Create the one.'))
+        : Container(
+            child: SingleChildScrollView(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: ListView.separated(
+                      separatorBuilder: (context, index) => const Divider(),
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: posts.length,
+                      itemBuilder: (ctx, i) {
+                        return Container(
+                          color: Colors.white,
+                          child: Column(
                             children: <Widget>[
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 10,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Row(
+                                      children: <Widget>[
+                                        const CircleAvatar(
+                                          backgroundImage: AssetImage(
+                                              'assets/images/author.jpg'),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(posts[i].author),
+                                      ],
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.more_horiz),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const Divider(),
+                              carousel(images
+                                  .where((element) =>
+                                      element.postId == posts[i].id)
+                                  .toList()),
                               Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  const CircleAvatar(
-                                    backgroundImage: AssetImage('assets/images/author.jpg'),
+                                  Row(
+                                    children: <Widget>[
+                                      IconButton(
+                                        onPressed: () {
+                                          DBProvider.db
+                                              .likeOrUnlikePost(posts[i]);
+                                          fetchAll();
+                                        },
+                                        icon: posts[i].isLiked == 1
+                                            ? const Icon(Icons.favorite)
+                                            : const Icon(Icons.favorite_border),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.comment),
+                                      ),
+                                      IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(Icons.send),
+                                      ),
+                                    ],
                                   ),
-                                  const SizedBox(
-                                    width: 10,
+                                  IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.bookmark_border),
                                   ),
-                                  Text(posts[i].author),
                                 ],
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.more_horiz),
-                                onPressed: () {},
+
+                              if (posts[i].isLiked == 1)
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 14,
+                                  ),
+                                  child: RichText(
+                                    softWrap: true,
+                                    overflow: TextOverflow.visible,
+                                    text: const TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: "Liked by ",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                        TextSpan(
+                                          text: "easydush",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+
+                              // caption
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 5,
+                                ),
+                                child: RichText(
+                                  softWrap: true,
+                                  overflow: TextOverflow.visible,
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: posts[i].author + ' ',
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ), TextSpan(
+                                        text: posts[i].text,
+                                        style: const TextStyle(
+                                            color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                              // post date
+                              Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                ),
+                                alignment: Alignment.topLeft,
+                                child: Text(
+                                  DateFormat('dd MMMM yyyy')
+                                      .format(
+                                          posts[i].timestamp ?? DateTime.now())
+                                      .toString(),
+                                  textAlign: TextAlign.start,
+                                  style: const TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                        ),
-                        carousel(images.where((element) => element.postId == posts[i].id).toList()),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: Icon(Icons.favorite),
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.comment),
-                                ),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.send),
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.bookmark_border),
-                            ),
-                          ],
-                        ),
-
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(
-                            horizontal: 14,
-                          ),
-                          child: RichText(
-                            softWrap: true,
-                            overflow: TextOverflow.visible,
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: "Liked By ",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                TextSpan(
-                                  text: "easydush",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // caption
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          margin: EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 5,
-                          ),
-                          child: RichText(
-                            softWrap: true,
-                            overflow: TextOverflow.visible,
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: posts[i].author,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-
-                        // post date
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                          ),
-                          alignment: Alignment.topLeft,
-                          child: const Text(
-                            "Febuary 2020",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
-                          ),
-                        ),
-                      ],
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 }

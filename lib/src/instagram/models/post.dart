@@ -9,14 +9,14 @@ class Post {
     required this.author,
     this.timestamp,
     this.text,
-    this.isLiked = false,
+    this.isLiked = 0,
   });
 
   int id;
   String author;
   DateTime? timestamp;
   String? text;
-  bool isLiked;
+  int isLiked;
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
 
