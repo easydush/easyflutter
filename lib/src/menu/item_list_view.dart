@@ -27,7 +27,7 @@ class ItemListView extends StatelessWidget {
           id: 3,
           url: InstagramView.routeName,
           logoName: '4.png',
-          title: 'Instagram')
+          title: 'easygram')
     ],
   }) : super(key: key);
 
