@@ -15,7 +15,7 @@ abstract class _MessageStore with Store {
   @observable
   ObservableList<Message>? messages = ObservableList.of([]);
 
-  RestClient restClient = RestClient(Dio(), baseUrl: 'https://itis-chat-app-ex.herokuapp.com/chat');
+  RestClient restClient = RestClient(Dio());
 
   @action
   void fetchMessages() {

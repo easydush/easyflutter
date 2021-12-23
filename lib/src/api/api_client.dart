@@ -1,11 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:easyflutter/src/gallery/models/image_item.dart';
 import 'package:easyflutter/src/api_chat/models/message.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'api_client.g.dart';
 
-@RestApi()
+@RestApi(baseUrl: "https://itis-chat-app-ex.herokuapp.com/chat")
 abstract class RestClient {
   factory RestClient(Dio dio, {String baseUrl}) = _RestClient;
 
@@ -14,8 +13,5 @@ abstract class RestClient {
 
   @POST("")
   Future<List<Message>> sendMessage(@Body() Message message);
-
-  @GET("")
-  Future<String> getImage();
 
 }
