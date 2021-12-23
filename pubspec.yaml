@@ -20,6 +20,10 @@ dependencies:
   flutter_mobx: ^2.0.2
   http: 0.13.3
   dio: ^4.0.0
+  flutter_modular: ^4.3.0
+  image_picker: ^0.8.4+4
+  path: ^1.8.0
+  flutter_speed_dial: ^5.0.0+1
 
 dev_dependencies:
   flutter_test:
